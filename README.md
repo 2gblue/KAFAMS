@@ -1,6 +1,6 @@
 # About
 
-Repository for KAFAMS maintenance and evolution works.
+Repository for KAFAMS maintenance and evolution work.
 
 ### Setting Up
 
