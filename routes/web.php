@@ -19,6 +19,10 @@ Route::get('students/admin', [StudentController::class, 'indexAdmin'])->name('st
 
 Route::post('manageActivity/{activity}/participate', [ActivityController::class, 'participate'])
     ->name('manageActivity.participate');
+Route::get('manageActivity/participation', [ActivityController::class, 'participationList'])
+    ->name('manageActivity.participation');
+Route::delete('manageActivity.participation/{participation}', [ActivityController::class, 'deleteParticipation'])->name('manageActivity.participation.destroy');
+
 
 Route::get('manageStudentResult/viewStudentResult', [StudentResultController::class, 'viewStudentResult'])->name('manageStudentResult.viewStudentResult');
 Route::get('manageStudentResult/viewSubjectList', [StudentResultController::class, 'viewSubjectList'])->name('manageStudentResult.viewSubjectList');
@@ -52,11 +56,3 @@ Route::delete('/bulletins/{bulletin}', [bulletinController::class, 'deleteBullet
 Route::get('/manageBulletin/editBulletin/{id}', [bulletinController::class, 'editBulletin'])->name('manageBulletin.editBulletin');
 Route::put('/bulletins/{id}', [bulletinController::class, 'updateBulletin'])->name('manageBulletin.updateBulletin');
 Route::get('/bulletins/show', [bulletinController::class, 'showBulletin'])->name('manageBulletin.showBulletin');
-
-
-
-
-
-
-
-

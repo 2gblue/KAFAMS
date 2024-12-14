@@ -105,8 +105,33 @@ class ActivityController extends Controller
     }
 
 
-    public function participationList(Activity $activity)
+    public function participationList()
     {
-        //null
+        $user = auth()->user();
+
+        // Get all students linked to the logged-in user
+        $students = Student::where('user_id', $user->id)->pluck('id'); // Get only student IDs
+
+        // Get all participations for these students with activities happening after today
+        $participations = Participation::whereIn('student_id', $students)
+            ->whereHas('activity', function ($query) {
+                $query->where('activityDate', '>', Carbon::today()); // Filter for future activities
+            })
+            ->with(['activity', 'student']) // Eager load activity and student relationships
+            ->join('activities', 'activities.id', '=', 'participations.activity_id') // Explicit join to the activities table
+            ->orderBy('activities.activityDate') // Correct the reference to the activityDate column
+            ->paginate(10); // Paginate the results
+
+        return view('manageActivity.participation', [
+            'datas' => $participations,
+        ]);
+    }
+
+    public function deleteParticipation(Participation $participation)
+    {
+        $participation->delete();
+
+        return redirect()->route('manageActivity.participation')
+            ->with('success', 'Participation removed successfully.');
     }
 }
