@@ -76,23 +76,34 @@ class ActivityController extends Controller
     {
         $validatedData = $request->validate([
             'student_id' => 'required|integer|exists:students,id',
-        ]); //Validate request data
+        ]);
 
-        $existingParticipation = Participation::where('activity_id', $activity->id) //Check for existing participations
+        // Check if the student is already participating
+        $existingParticipation = Participation::where('activity_id', $activity->id)
             ->where('student_id', $validatedData['student_id'])
             ->exists();
 
         if ($existingParticipation) {
-            return redirect()->route('manageActivity.index')->with('failure', 'Duplicate entry found.'); //Reject if duplicate entry
+            return redirect()->route('manageActivity.index')->with('failure', 'You are already participating in this activity.');
         }
 
-        $participation = new Participation; //Create new participation entry
+        // Count the current number of participants for this activity
+        $currentParticipants = Participation::where('activity_id', $activity->id)->count();
+
+        // Check if the maximum number of participants has been reached
+        if ($activity->max > 0 && $currentParticipants >= $activity->max) {
+            return redirect()->route('manageActivity.index')->with('failure', 'The maximum number of participants has been reached.');
+        }
+
+        // Create a new participation entry
+        $participation = new Participation;
         $participation->student_id = $validatedData['student_id'];
         $participation->activity_id = $activity->id;
         $participation->save();
 
-        return redirect()->route('manageActivity.index')->with('success', 'Participation added successfully.'); //Redirect to index with green message
+        return redirect()->route('manageActivity.index')->with('success', 'Participation added successfully.');
     }
+
 
     public function participationList(Activity $activity)
     {

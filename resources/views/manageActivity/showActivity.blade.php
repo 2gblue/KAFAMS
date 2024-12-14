@@ -114,7 +114,12 @@
         <div class="row justify-content-center mt-3">
             <div class="col">
                 <div class="collapse" id="participatingStudents">
-                    <h4><b>Participating Students ({{ count($participatingStudents) }})</b></h4>
+                    <h4><b>Participating Students ( {{ count($participatingStudents) }}
+                        @if($activity['max']>0)
+                        / {{$activity['max']}}
+                        @endif
+                    )
+                    </b></h4>
                     <ul class="list-group">
                         @foreach ($participatingStudents as $student)
                             <li class="list-group-item">{{ $student->stdName }}</li>
