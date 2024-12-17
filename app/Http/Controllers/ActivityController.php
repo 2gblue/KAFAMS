@@ -115,12 +115,14 @@ class ActivityController extends Controller
         // Get all participations for these students with activities happening after today
         $participations = Participation::whereIn('student_id', $students)
             ->whereHas('activity', function ($query) {
-                $query->where('activityDate', '>', Carbon::today()); // Filter for future activities
+                $query->where('activityDate', '>', Carbon::today());
             })
-            ->with(['activity', 'student']) // Eager load activity and student relationships
-            ->join('activities', 'activities.id', '=', 'participations.activity_id') // Explicit join to the activities table
-            ->orderBy('activities.activityDate') // Correct the reference to the activityDate column
-            ->paginate(10); // Paginate the results
+            ->with(['activity', 'student'])
+            ->join('activities', 'activities.id', '=', 'participations.activity_id')
+            ->select('participations.*', 'activities.activityDate')
+            ->orderBy('activities.activityDate')
+            ->paginate(10);
+
 
         return view('manageActivity.participation', [
             'datas' => $participations,
@@ -131,7 +133,7 @@ class ActivityController extends Controller
     {
         $participation->delete();
 
-        return redirect()->route('manageActivity.participation')
+        return redirect()->route('manageActivity.index')
             ->with('success', 'Participation removed successfully.');
     }
 }

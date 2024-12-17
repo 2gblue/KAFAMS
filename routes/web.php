@@ -21,7 +21,7 @@ Route::post('manageActivity/{activity}/participate', [ActivityController::class,
     ->name('manageActivity.participate');
 Route::get('manageActivity/participation', [ActivityController::class, 'participationList'])
     ->name('manageActivity.participation');
-Route::delete('manageActivity.participation/{participation}', [ActivityController::class, 'deleteParticipation'])->name('manageActivity.participation.destroy');
+Route::delete('manageActivity/participation/{participation}', [ActivityController::class, 'deleteParticipation'])->name('manageActivity.participation.destroy');
 
 
 Route::get('manageStudentResult/viewStudentResult', [StudentResultController::class, 'viewStudentResult'])->name('manageStudentResult.viewStudentResult');

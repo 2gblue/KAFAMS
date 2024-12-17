@@ -40,13 +40,12 @@
                                     <box-icon name='trash' type='solid'></box-icon>
                                 </a>
                                 <form id="delete-form-{{ $participation->id }}"
-                                      action="{{ route('manageActivity.participation.destroy', ['participation' => $participation->id]) }}"
-                                      method="POST" style="display: none;">
-                                    @csrf
-                                    @method('DELETE')
-                                </form>
+                                    action="{{ url('manageActivity/participation/' . $participation->id) }}"
+                                    method="POST" style="display: none;">
+                                  @csrf
+                                  @method('DELETE')
+                              </form>                              
                             </td>
-                            
                         </tr>
                     @empty
                         <tr>
