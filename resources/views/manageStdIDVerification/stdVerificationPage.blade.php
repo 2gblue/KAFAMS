@@ -46,13 +46,13 @@
               <td>
                 <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#updateStatusModal"
                   data-student-id="{{ $student->id }}">Update Status</button>
-                  <form action="{{ route('students.destroy',$student->id)}}" class="d-inline-grid" method="POST">
-                    @csrf
-                    @method('DELETE')
-                    <button class="btn btn-danger" type="submit">
-                      <i class="bi bi-trash-fill"></i>
-                    </button>
-                  </form>
+                <form action="{{ route('students.destroy',$student->id)}}" class="d-inline-grid delete-form" method="POST">
+                  @csrf
+                  @method('DELETE')
+                  <button class="btn btn-danger" type="button" onclick="confirmDelete(this)">
+                    <i class="bi bi-trash-fill"></i>
+                  </button>
+                </form>
               </td>
             </tr>
           @endforeach
@@ -60,15 +60,15 @@
       </table>
     </div>
 
-   <div style="position: fixed; left: 50%; transform: translate(-50%, -50%);)">
+    <div style="position: fixed; left: 50%; transform: translate(-50%, -50%);">
       @if (session('failure'))
-        <div class="alert alert-danger">
+        <div class="alert alert-danger notification">
           {{ session('failure') }}
         </div>
       @endif <!--Red pop up message-->
   
       @if (session('success'))
-        <div class="alert alert-success">
+        <div class="alert alert-success notification">
           {{ session('success') }}
         </div>
       @endif <!--Green pop up message-->
@@ -121,6 +121,18 @@
         var form = document.getElementById('updateStatusForm');
         form.action = form.action.replace('id', studentId);
       });
+
+      // Hide notification after 30 seconds
+      setTimeout(() => {
+        const notifications = document.querySelectorAll('.notification');
+        notifications.forEach(notification => notification.remove());
+      }, 3000);
     });
+
+    function confirmDelete(button) {
+      if (confirm("Are you sure you want to delete this student record? This action cannot be undone.")) {
+        button.closest('form').submit();
+      }
+    }
   </script>
 @endsection
