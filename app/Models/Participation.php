@@ -8,13 +8,12 @@ use Illuminate\Database\Eloquent\Model;
 class Participation extends Model
 {
     use HasFactory;
-    protected $primaryKey = 'id';
 
     protected $fillable = [
         'activity_id',
         'student_id',
     ];
-
+    
     public function student() //Foreign key
     {
         return $this->belongsTo(Student::class);

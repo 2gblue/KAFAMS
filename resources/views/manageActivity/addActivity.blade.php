@@ -54,12 +54,6 @@
                             <input type="time" class="form-control" id="end_time" name="endTime">
                         </div>
                     </div>
-                    <div class="form-group row m-3">
-                        <label for="endTime" class="col-sm-5 col-form-label">Maximum Participants</label>
-                        <div class="col-sm-5">
-                            <input type="number" class="form-control" id="max" name="max">
-                        </div>
-                    </div>
                 </div>
             </div>
             <div class="row justify-content-end">

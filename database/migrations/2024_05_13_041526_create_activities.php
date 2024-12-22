@@ -19,7 +19,6 @@ return new class extends Migration
             $table->date('activityDate');
             $table->time('startTime');
             $table->time('endTime');
-            $table->integer('max')->nullable();
             $table->timestamps();
         });
     }

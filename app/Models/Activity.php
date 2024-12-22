@@ -15,7 +15,6 @@ class Activity extends Model
         'activityDate',
         'startTime',
         'endTime',
-        'max',
     ];
 
     public function participations() //One participation has many activities

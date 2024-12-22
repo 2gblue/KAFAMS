@@ -13,11 +13,6 @@
                         <button type="button" class="btn" style="background-color:#647687; color:white;">Add</button>
                     </a>
                 @endif
-                @if (auth()->user()->role == 'user')
-                    <a href="{{ route('manageActivity.participation') }}">
-                        <button type="button" class="btn" style="background-color:#647687; color:white;">View Participations</button>
-                    </a>
-                @endif
             </div>
         </div>
         <div class="table-responsive">
