@@ -7,6 +7,8 @@ use App\Http\Controllers\StudentController;
 use App\Http\Controllers\StudentResultController;
 use App\Http\Controllers\TeacherController;
 use App\Http\Controllers\bulletinController;
+use App\Http\Controllers\SearchController;
+
 
 Route::get('/', function () {
     return redirect('/login');
@@ -16,6 +18,7 @@ Auth::routes();
 //return home
 //Route::get('/home', [App\Http\Controllers\HomeController::class, 'index']);
 Route::get('students/admin', [StudentController::class, 'indexAdmin'])->name('students.indexAdmin'); //Don't shift this to the group function
+Route::get('/teacher-accounts', [SearchController::class, 'index'])->name('search');
 
 Route::post('manageActivity/{activity}/participate', [ActivityController::class, 'participate'])
     ->name('manageActivity.participate');
@@ -52,11 +55,3 @@ Route::delete('/bulletins/{bulletin}', [bulletinController::class, 'deleteBullet
 Route::get('/manageBulletin/editBulletin/{id}', [bulletinController::class, 'editBulletin'])->name('manageBulletin.editBulletin');
 Route::put('/bulletins/{id}', [bulletinController::class, 'updateBulletin'])->name('manageBulletin.updateBulletin');
 Route::get('/bulletins/show', [bulletinController::class, 'showBulletin'])->name('manageBulletin.showBulletin');
-
-
-
-
-
-
-
-
