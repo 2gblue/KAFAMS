@@ -7,7 +7,6 @@ use App\Http\Controllers\StudentController;
 use App\Http\Controllers\StudentResultController;
 use App\Http\Controllers\TeacherController;
 use App\Http\Controllers\bulletinController;
-use App\Http\Controllers\SearchController;
 
 Route::get('/', function () {
     return redirect('/login');
@@ -17,7 +16,6 @@ Auth::routes();
 //return home
 //Route::get('/home', [App\Http\Controllers\HomeController::class, 'index']);
 Route::get('students/admin', [StudentController::class, 'indexAdmin'])->name('students.indexAdmin'); //Don't shift this to the group function
-Route::get('/teacher-accounts', [SearchController::class, 'index'])->name('search');
 
 Route::post('manageActivity/{activity}/participate', [ActivityController::class, 'participate'])
     ->name('manageActivity.participate');
