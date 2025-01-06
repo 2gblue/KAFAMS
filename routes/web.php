@@ -22,6 +22,10 @@ Route::get('/teacher-accounts', [SearchController::class, 'index'])->name('searc
 
 Route::post('manageActivity/{activity}/participate', [ActivityController::class, 'participate'])
     ->name('manageActivity.participate');
+Route::get('manageActivity/participation', [ActivityController::class, 'participationList'])
+    ->name('manageActivity.participation');
+Route::delete('manageActivity/participation/{participation}', [ActivityController::class, 'deleteParticipation'])->name('manageActivity.participation.destroy');
+
 
 Route::get('manageStudentResult/viewStudentResult', [StudentResultController::class, 'viewStudentResult'])->name('manageStudentResult.viewStudentResult');
 Route::get('manageStudentResult/viewSubjectList', [StudentResultController::class, 'viewSubjectList'])->name('manageStudentResult.viewSubjectList');
