@@ -36,6 +36,7 @@ Route::post('manageStudentResult/addResult', [StudentResultController::class, 'a
 Route::get('manageStudentResult/viewStudentList', [StudentResultController::class, 'viewStudentList'])->name('manageStudentResult.viewStudentList');
 Route::get('manageStudentResult/editResult', [StudentResultController::class, 'editResult'])->name('manageStudentResult.editResult');
 Route::post('manageStudentResult/updateResult', [StudentResultController::class, 'updateResult'])->name('manageStudentResult.updateResult');
+Route::get('/manageStudentResult/search', [StudentResultController::class, 'search'])->name('manageStudentResult.search');
 
 Route::resources([
     'manageActivity' => ActivityController::class,

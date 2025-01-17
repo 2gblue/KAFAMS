@@ -155,39 +155,46 @@ class StudentResultController extends Controller
 
     public function editResult(Request $request)
     {
-        // Retrieve distinct class names from the classes table
-        $classes = DB::table('classes')->select('className')->distinct()->get();
-        $subjectID = $request->query('subjectID');
-        $subjectName = null;
+    
+    $classes = DB::table('classes')->select('className')->distinct()->get();
+    $subjectID = $request->query('subjectID');
+    $subjectName = null;
 
-        if ($subjectID) {
-            // Retrieve the subject record with the given subjectID from the subjects table
-            $subject = DB::table('subjects')->where('subjectID', $subjectID)->first();
-            if ($subject) {
-                $subjectName = $subject->subjectName;
-            }
+    if ($subjectID) {
+        $subject = DB::table('subjects')->where('subjectID', $subjectID)->first();
+        if ($subject) {
+            $subjectName = $subject->subjectName;
         }
-
-        $filteredClass = collect();
-
-        if ($request->has('classID') && $request->classID) {
-            // Fetch data for the selected class
-            $filteredClass = DB::table('classes')
-                ->leftJoin('results', 'classes.studentID', '=', 'results.studentID')
-                ->select('classes.studentID', 'classes.studentName', 'classes.className', 'results.resultID', 'results.resultMark', 'results.resultGrade')
-                ->where('classes.className', $request->classID)
-                ->where('results.subjectID', $subjectID)
-                ->get();
-        } else {
-            // Fetch data for all classes
-            $filteredClass = DB::table('classes')
-                ->leftJoin('results', 'classes.studentID', '=', 'results.studentID')
-                ->select('classes.studentID', 'classes.studentName', 'classes.className', 'results.resultID', 'results.resultMark', 'results.resultGrade')
-                ->where('results.subjectID', $subjectID)
-                ->get();
-        }
-        return view('manageStudentResult.EditStudentResult', compact('classes', 'filteredClass', 'subjectName', 'subjectID'));
     }
+
+    $searchQuery = $request->query('searchQuery', ''); // Get search query from request
+    
+    $filteredClass = DB::table('classes')
+    ->leftJoin('results', 'classes.studentID', '=', 'results.studentID') // Join classes with results table
+    ->select(
+        'classes.studentID', 
+        'classes.className',
+        'classes.studentName',
+        'results.resultID', 
+        'results.resultMark',
+        'results.resultGrade'
+    ) // Only select necessary columns
+    ->where('results.subjectID', $subjectID)
+    ->when($request->has('classID'), function ($query) use ($request) {
+        return $query->where('classes.className', $request->classID); // Filter by className
+    })
+    ->when($searchQuery, function ($query) use ($searchQuery) {
+        if (is_numeric($searchQuery)) {
+            return $query->where('classes.studentID', $searchQuery); // Search by studentID
+        }
+        return $query->where('classes.studentName', 'like', '%' . $searchQuery . '%'); // Or search by studentName
+    })
+    ->get(); // Execute and get results
+
+    return view('manageStudentResult.EditStudentResult', compact('classes', 'filteredClass', 'subjectName', 'subjectID'));
+    }
+
+
 
     public function updateResult(Request $request)
     {
