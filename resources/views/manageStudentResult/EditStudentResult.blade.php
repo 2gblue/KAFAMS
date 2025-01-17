@@ -17,7 +17,7 @@
     <form action="{{ route('manageStudentResult.editResult') }}" method="GET" class="mb-4">
         <div class="row">
             <div class="col-md-6">
-                <input type="hidden" class="form-control" name="subjectID" value="{{ $subjectID }}"readonly>
+                <input type="hidden" class="form-control" name="subjectID" value="{{ $subjectID }}" readonly>
                 <input type="text" class="form-control" value="{{ $subjectName }}" readonly>
             </div>
         </div>
@@ -34,11 +34,25 @@
         </div>
     </form>
 
+    <!-- Search Form -->
+    <form action="{{ route('manageStudentResult.editResult') }}" method="GET" class="mb-4">
+        <input type="hidden" name="subjectID" value="{{ $subjectID }}">
+        <input type="hidden" name="classID" value="{{ request('classID') }}">
+        <div class="row">
+            <div class="col-md-8">
+                <input type="text" name="searchQuery" class="form-control" placeholder="Search by student name or ID" value="{{ request('searchQuery') }}">
+            </div>
+            <div class="col-md-2">
+                <button type="submit" class="btn btn-primary">Search</button>
+            </div>
+        </div>
+    </form>
+
     <div class="table-responsive">
     @if(isset($filteredClass) && $filteredClass->count())
         <form action="{{ route('manageStudentResult.updateResult') }}" method="POST">
             @csrf
-            <input type="hidden" name="subjectID" value="{{ $subjectID}}">
+            <input type="hidden" name="subjectID" value="{{ $subjectID }}">
             <input type="hidden" name="classID" value="{{ request('classID') }}">
             <table class="table table-striped">
                 <thead>
@@ -50,11 +64,11 @@
                         <th style="width: 15%">Grade</th>
                     </tr>
                 </thead>
-                 
                 <tbody>
                     @foreach($filteredClass as $class)
                     <input type="hidden" name="studentID[{{ $class->studentID }}]" value="{{ $class->studentID }}">
                     <input type="hidden" name="resultID[{{ $class->studentID }}]" value="{{ $class->resultID }}">
+                    <tr>
                         <td>{{ $loop->iteration }}</td>
                         <td>{{ $class->studentName }}</td>
                         <td>{{ $class->className }}</td>
@@ -68,15 +82,15 @@
                     @endforeach
                 </tbody>
             </table>
-            <div class="col-md-6 mt-4 d-flex ">
+            <div class="col-md-6 mt-4 d-flex">
                 @if (auth()->user()->role == 'admin' || auth()->user()->role == 'teacher')
                 <button type="submit" class="btn" style="background-color:#647687; color:white;">Save</button>
                 @endif
             </div>
-            @else
-            <p>No marks added for the students in selected class.</p>
-            @endif
         </form>
+    @else
+        <p>No results found for the selected class or search query.</p>
+    @endif
     </div>
 
     <div class="d-flex flex-row-reverse">
